@@ -6,11 +6,6 @@ use Closure;
 
 class CheckIsAuthenticated
 {
-    private function verify_token($token)
-    {
-        throw new Exception('Not implemented');
-    }
-
     /**
      * Handle an incoming request.
      *

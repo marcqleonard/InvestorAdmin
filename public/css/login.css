@@ -1,0 +1,16 @@
+body {
+    background-color: #303F9F;
+}
+
+#form-container {
+    background-color: white;
+    padding: 3em;
+}
+
+#login-btn {
+    width: 100%;
+}
+
+h1 {
+    color: white;
+}
