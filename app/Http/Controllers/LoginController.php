@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Mockery\Exception;
 
 class LoginController extends Controller
 {
@@ -40,9 +39,18 @@ class LoginController extends Controller
         // parse response body
         $decoded_body = json_decode($response->getBody());
         $accessToken = $decoded_body->accessToken;
-        $tokenLifetime = $decoded_body->expires;
 
-        // compute expiration datetime (epoch)
+        $explodedToken = explode('.', $accessToken);
+        $decoded = json_decode(base64_decode($explodedToken[1]));
+        $userPermission = $decoded->aud;
+
+        if($userPermission != "Administrator")
+        {
+            $message = ["You do not have Administrator privilege."];
+            return redirect()->back()->withInput()->withErrors(['errors' => $message]);
+        }
+
+        $tokenLifetime = $decoded_body->expires;
         $expirationTimestamp = time() + $tokenLifetime;
 
         // store token in session
