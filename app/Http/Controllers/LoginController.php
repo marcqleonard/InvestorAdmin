@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Mockery\Exception;
 
 class LoginController extends Controller
 {
@@ -23,14 +24,18 @@ class LoginController extends Controller
             'password' => $request->input('password')
         ]);
 
-        // get response
-        $client = new \GuzzleHttp\Client();
-        $response = $client->post('https://investor-api.herokuapp.com/api/1.0/token',
-            [
-                'headers' => ['Content-Type' => 'application/json', 'Accept' => 'application/json'],
-                'body'    => $payload
-            ]
-        );
+        try {
+            $client = new \GuzzleHttp\Client();
+            $response = $client->post('https://investor-api.herokuapp.com/api/1.0/token',
+                [
+                    'headers' => ['Content-Type' => 'application/json', 'Accept' => 'application/json'],
+                    'body'    => $payload
+                ]
+            );
+        } catch(\Exception $e) {
+            $message = ["Authentication failed. Email or password may be incorrect."];
+            return redirect()->back()->withInput()->withErrors(['errors' => $message]);
+        }
 
         // parse response body
         $decoded_body = json_decode($response->getBody());
