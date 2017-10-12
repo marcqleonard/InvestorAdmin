@@ -11,10 +11,11 @@
 |
 */
 
+Route::redirect('/', '/dashboard', 301);
 
-Route::get('/', function () {
-    return view('login.index');
+Route::get('login', 'LoginController@login')->name('login');;
+Route::post('authenticate', 'LoginController@authenticate');
+
+Route::group(['middleware' => 'restAuthentication'], function () {
+    Route::get('dashboard', 'DashboardController@index')->name('dashboard');
 });
-
-
-Route::get('login', 'LoginController@login');
