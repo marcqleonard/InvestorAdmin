@@ -12,6 +12,15 @@
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-12">
+
+                        @if(isset($status))
+                            <div class="alert alert-info">
+                                <ul>
+                                    <li>{{ $status }}</li>
+                                </ul>
+                            </div>
+                        @endif
+
                         <table class="table table-hover">
                             <thead>
                             <tr>
@@ -19,6 +28,7 @@
                                 <th>Email</th>
                                 <th>Name</th>
                                 <th>Level</th>
+                                <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -28,6 +38,7 @@
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->displayName }}</td>
                                 <td>{{ $user->level }}</td>
+                                <td><a class="btn btn-danger" href="{{ route('deleteUser', array('userId' => $user->id)) }}">Delete</a></td>
                             </tr>
                             @endforeach
                             </tbody>
