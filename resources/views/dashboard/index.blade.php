@@ -7,9 +7,6 @@
 @section('title', 'Dashboard')
 
 @section('content')
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-12">
 
@@ -21,7 +18,7 @@
                             </div>
                         @endif
 
-                        <table class="table table-hover">
+                        <table class="table table-responsive table-hover">
                             <thead>
                             <tr>
                                 <th>Id</th>
@@ -69,9 +66,4 @@
                         </nav>
                     </div>
                 </div>
-
-
-            </div>
-        </div>
-    </div>
 @endsection

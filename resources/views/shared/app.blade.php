@@ -19,12 +19,15 @@
 </head>
 <body>
 
-{{--@include('layouts.navbar')--}}
+@include('shared.navbar')
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
-            <div class="page-header">
-                <h1>@yield('title')</h1>
+            <div class="row pt-md-4 border-bottom-0">
+                <div class="col-md-12">
+                    <h1>@yield('title')</h1>
+                </div>
             </div>
             @yield('content')
         </div>
