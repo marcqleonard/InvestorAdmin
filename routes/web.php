@@ -19,4 +19,6 @@ Route::post('authenticate', 'LoginController@authenticate');
 Route::group(['middleware' => 'restAuthentication'], function () {
     Route::get('dashboard', 'DashboardController@index')->name('dashboard');
     Route::get('deleteUser', 'DashboardController@delete')->name('deleteUser');
+    Route::get('logout', 'LoginController@logout')->name('logout');;
+
 });

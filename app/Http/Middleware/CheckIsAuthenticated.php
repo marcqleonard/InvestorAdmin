@@ -24,6 +24,8 @@ class CheckIsAuthenticated
             return redirect('login');
         }
 
+        $request->session()->flash('isAuthenticated', 'true');
+
         return $next($request);
     }
 }

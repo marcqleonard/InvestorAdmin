@@ -11,6 +11,15 @@ class LoginController extends Controller
         return view('login.index');
     }
 
+    public function logout(Request $request) {
+        $request->session()->forget('accessToken');
+        $request->session()->forget('expirationTimestamp');
+
+        $request->session()->flush();
+
+        return redirect()->route('login')->with('status', 'You are now logged out');
+    }
+
     public function authenticate(Request $request) {
         $request->validate([
             'email' => 'required|min:6|max:255',
