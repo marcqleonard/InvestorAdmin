@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 class DashboardController extends Controller
 {
     //
-    public function index(Request $request, $status=null)
+    public function index(Request $request)
     {
         if($request->has('pageSize') && $request->has('pageNumber')) {
             $pageSize = $request->input('pageSize');
@@ -16,10 +16,6 @@ class DashboardController extends Controller
         else {
             $pageSize = 5;
             $pageNumber = 1;
-        }
-
-        if($request->has('status')) {
-            $status = $request->input('status');
         }
 
         try {
@@ -46,7 +42,7 @@ class DashboardController extends Controller
         $pageSize = $decoded_body->pageSize;
         $totalPageCount = $decoded_body->totalPageCount;
 
-        return view('dashboard.index')->with(compact('users'))->with('pageNumber', $pageNumber)->with('pageSize', $pageSize)->with('totalPageCount', $totalPageCount)->with('status', $status);
+        return view('dashboard.index')->with(compact('users'))->with('pageNumber', $pageNumber)->with('pageSize', $pageSize)->with('totalPageCount', $totalPageCount);
     }
 
     public function delete(Request $request)
@@ -70,6 +66,6 @@ class DashboardController extends Controller
             echo "Failure to get data";
         }
         $status = "User successfully deleted";
-        return redirect()->route('dashboard', ['status' => $status]);
+        return redirect()->route('dashboard')->with('status', 'User deleted!');
     }
 }

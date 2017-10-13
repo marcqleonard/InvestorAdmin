@@ -10,12 +10,10 @@
                 <div class="row">
                     <div class="col-md-12">
 
-                        @if(isset($status))
-                            <div class="alert alert-info">
-                                <ul>
-                                    <li>{{ $status }}</li>
-                                </ul>
-                            </div>
+                        @if(session('status'))
+                        <div class="alert alert-success">
+                            {{ session('status') }}
+                        </div>
                         @endif
 
                         <table class="table table-responsive table-hover">
