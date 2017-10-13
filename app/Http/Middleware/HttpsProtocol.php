@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 
 class HttpsProtocol
 {
@@ -15,7 +16,8 @@ class HttpsProtocol
      */
     public function handle($request, Closure $next)
     {
-        if(!$request->secure() && env('APP_ENV') === 'production') {
+        if(!$request->secure() && ! (env('APP_ENV') === 'local')) {
+            Request::setTrustedProxies([$request->getClientIp()]);
             return redirect()->secure($request->getRequestUri());
         }
 
