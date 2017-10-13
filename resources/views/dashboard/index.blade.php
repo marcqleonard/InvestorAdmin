@@ -10,27 +10,56 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Email</th>
+                                <th>Name</th>
+                                <th>Level</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($users as $user)
+                            <tr>
+                                <th scope="row">{{ $user->id }}</th>
+                                <td>{{ $user->email }}</td>
+                                <td>{{ $user->displayName }}</td>
+                                <td>{{ $user->level }}</td>
+                            </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
-                <table class="table table-sm">
-                    <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Email</th>
-                        <th>Name</th>
-                        <th>Level</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($users as $user)
-                    <tr>
-                        <th scope="row">{{ $user->id }}</th>
-                        <td>{{ $user->email }}</td>
-                        <td>{{ $user->displayName }}</td>
-                        <td>{{ $user->level }}</td>
-                    </tr>
-                    @endforeach
-                    </tbody>
-                </table>
+                <div class="row">
+                    <div class="col-md-12">
+                        <nav aria-label="...">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item {{ ($pageNumber == 1) ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ route('dashboard', array('pageNumber' => $pageNumber - 1, 'pageSize' => $pageSize)) }}" tabindex="-1">Previous</a>
+                                </li>
+                                @for ($i = 1; $i <= $totalPageCount; $i++)
+                                    @if ($i == $pageNumber)
+                                        <li class="page-item active">
+                                            <a class="page-link" href="{{ route('dashboard', array('pageNumber' => $pageNumber, 'pageSize' => $pageSize)) }}">{{ $i }} <span class="sr-only">(current)</span></a>
+                                        </li>
+                                    @else
+                                        <li class="page-item"><a class="page-link" href="{{ route('dashboard', array('pageNumber' => $i, 'pageSize' => $pageSize)) }}">{{ $i }}</a></li>
+                                    @endif
+                                @endfor
+                                <li class="page-item {{ ($pageNumber == $totalPageCount) ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ route('dashboard', array('pageNumber' => $pageNumber + 1, 'pageSize' => $pageSize)) }}">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
+
             </div>
         </div>
     </div>
