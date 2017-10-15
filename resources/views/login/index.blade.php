@@ -38,7 +38,7 @@
                         <input type="password" class="form-control" id="password" name="password" placeholder="Password">
                     </div>
                     <div class=form-group">
-                        <input class="btn btn-primary" type="submit" value="Login" id="login-btn">
+                        <input class="btn btn-primary btn-lg btn-block" type="submit" value="Login" id="login-btn">
                     </div>
                 </form>
             </div>
