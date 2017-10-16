@@ -4,7 +4,7 @@
     <link rel="stylesheet" type="text/css" href="{{ url('/css/dashboard.css') }}" />
 @endsection
 
-@section('title', 'Dashboard')
+@section('title', 'Users')
 
 @section('content')
                 <div class="row">
@@ -46,19 +46,19 @@
                         <nav aria-label="...">
                             <ul class="pagination justify-content-center">
                                 <li class="page-item {{ ($pageNumber == 1) ? 'disabled' : '' }}">
-                                    <a class="page-link" href="{{ route('dashboard', array('pageNumber' => $pageNumber - 1, 'pageSize' => $pageSize)) }}" tabindex="-1">Previous</a>
+                                    <a class="page-link" href="{{ route('users.index', array('pageNumber' => $pageNumber - 1, 'pageSize' => $pageSize)) }}" tabindex="-1">Previous</a>
                                 </li>
                                 @for ($i = 1; $i <= $totalPageCount; $i++)
                                     @if ($i == $pageNumber)
                                         <li class="page-item active">
-                                            <a class="page-link" href="{{ route('dashboard', array('pageNumber' => $pageNumber, 'pageSize' => $pageSize)) }}">{{ $i }} <span class="sr-only">(current)</span></a>
+                                            <a class="page-link" href="{{ route('users.index', array('pageNumber' => $pageNumber, 'pageSize' => $pageSize)) }}">{{ $i }} <span class="sr-only">(current)</span></a>
                                         </li>
                                     @else
-                                        <li class="page-item"><a class="page-link" href="{{ route('dashboard', array('pageNumber' => $i, 'pageSize' => $pageSize)) }}">{{ $i }}</a></li>
+                                        <li class="page-item"><a class="page-link" href="{{ route('users.index', array('pageNumber' => $i, 'pageSize' => $pageSize)) }}">{{ $i }}</a></li>
                                     @endif
                                 @endfor
                                 <li class="page-item {{ ($pageNumber == $totalPageCount) ? 'disabled' : '' }}">
-                                    <a class="page-link" href="{{ route('dashboard', array('pageNumber' => $pageNumber + 1, 'pageSize' => $pageSize)) }}">Next</a>
+                                    <a class="page-link" href="{{ route('users.index', array('pageNumber' => $pageNumber + 1, 'pageSize' => $pageSize)) }}">Next</a>
                                 </li>
                             </ul>
                         </nav>

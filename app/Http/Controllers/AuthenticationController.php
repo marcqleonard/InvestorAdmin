@@ -67,6 +67,6 @@ class LoginController extends Controller
         session(['expirationTimestamp' => $expirationTimestamp]);
 
         // redirect to dashboard is successful
-        return redirect()->action('DashboardController@index');
+        return redirect()->route('users.index');
     }
 }

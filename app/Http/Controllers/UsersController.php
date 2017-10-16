@@ -4,8 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class DashboardController extends Controller
+class UsersController extends Controller
 {
+    function cmp($a, $b)
+    {
+        return strcmp($a->displayName, $b->displayName);
+    }
+
     //
     public function index(Request $request)
     {
@@ -38,6 +43,7 @@ class DashboardController extends Controller
         // parse response body
         $decoded_body = json_decode($response->getBody());
         $users = $decoded_body->items;
+        //usort($users, array($this, "cmp"));
         $pageNumber = $decoded_body->pageNumber;
         $pageSize = $decoded_body->pageSize;
         $totalPageCount = $decoded_body->totalPageCount;
@@ -65,7 +71,7 @@ class DashboardController extends Controller
         } catch(\Exception $e) {
             echo "Failure to get data";
         }
-        $status = "User successfully deleted";
+
         return redirect()->route('dashboard')->with('status', 'User deleted!');
     }
 }
