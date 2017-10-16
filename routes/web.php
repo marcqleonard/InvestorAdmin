@@ -13,6 +13,9 @@
 
 Route::redirect('/', '/users');
 
+// temp fix for 301 redirect
+Route::redirect('/dashboard', '/users');
+
 Route::get('/login', 'AuthenticationController@login')->name('authentication.login');
 Route::post('/auth', 'AuthenticationController@authenticate')->name('authentication.authenticate');
 
