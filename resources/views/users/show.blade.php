@@ -4,7 +4,7 @@
     <link rel="stylesheet" type="text/css" href="{{ url('/css/dashboard.css') }}" />
 @endsection
 
-@section('title', 'User: ' . $user->id)
+@section('title', 'Edit User')
 
 @section('content')
     <div class="row">
@@ -29,8 +29,11 @@
         </div>
     </div>
 
+    <a href="{{ URL::previous() }}"><i class="fa fa-chevron-circle-left pr-md-1" aria-hidden="true"></i>Back</a>
+
     <div class="row">
         <div class="col-md-6 mx-auto">
+            <h3>{{ $user->id }}</h3>
             <form method="POST" action="{{ route('users.update', ['id' => $user->id]) }}">
                 {{ csrf_field() }}
                 <div class="form-group">
