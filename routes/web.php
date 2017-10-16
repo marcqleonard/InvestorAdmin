@@ -11,7 +11,7 @@
 |
 */
 
-Route::redirect('/', '/users', 301);
+Route::redirect('/', '/users');
 
 Route::get('/login', 'AuthenticationController@login')->name('authentication.login');
 Route::post('/auth', 'AuthenticationController@authenticate')->name('authentication.authenticate');
