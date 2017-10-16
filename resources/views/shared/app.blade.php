@@ -19,7 +19,9 @@
 </head>
 <body>
 
-@include('shared.navbar')
+@if(session('isAuthenticated') == 'true')
+    @include('shared.navbar')
+@endif
 
 <div class="container-fluid">
     <div class="row">

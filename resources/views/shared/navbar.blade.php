@@ -11,13 +11,11 @@
         </ul>
 
 
-        @if(session('isAuthenticated') == 'true')
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('authentication.logout') }}">Logout</a>
-                </li>
-            </ul>
-        @endif
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('authentication.logout') }}">Logout</a>
+            </li>
+        </ul>
 
     </div>
 </nav>

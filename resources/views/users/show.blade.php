@@ -29,7 +29,7 @@
         </div>
     </div>
 
-    <a href="{{ URL::previous() }}"><i class="fa fa-chevron-circle-left pr-md-1" aria-hidden="true"></i>Back</a>
+    <a href="{{ route('users.index') }}"><i class="fa fa-chevron-circle-left pr-md-1" aria-hidden="true"></i>Back</a>
 
     <div class="row">
         <div class="col-md-6 mx-auto">
