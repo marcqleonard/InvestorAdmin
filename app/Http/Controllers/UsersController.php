@@ -96,8 +96,8 @@ class UsersController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'email' => 'required|min:6|max:255',
-            'name' => 'required|min:6|max:255',
+            'email' => 'required|email|max:100',
+            'name' => 'required|alpha_num|min:5|max:30',
             'level' => 'required|in:Investor,Administrator'
         ]); // back to form if validation fails
 
