@@ -6,17 +6,12 @@ use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
-    function cmp($a, $b)
-    {
-        return strcmp($a->displayName, $b->displayName);
-    }
-
-    //
+    // show all users
     public function index(Request $request)
     {
-        if($request->has('pageSize') && $request->has('pageNumber')) {
-            $pageSize = $request->input('pageSize');
-            $pageNumber = $request->input('pageNumber');
+        if($request->has('page') && $request->has('size')) {
+            $pageSize = $request->input('size');
+            $pageNumber = $request->input('page');
         }
         else {
             $pageSize = 5;
@@ -43,19 +38,17 @@ class UsersController extends Controller
         // parse response body
         $decoded_body = json_decode($response->getBody());
         $users = $decoded_body->items;
-        //usort($users, array($this, "cmp"));
         $pageNumber = $decoded_body->pageNumber;
         $pageSize = $decoded_body->pageSize;
         $totalPageCount = $decoded_body->totalPageCount;
 
-        return view('dashboard.index')->with(compact('users'))->with('pageNumber', $pageNumber)->with('pageSize', $pageSize)->with('totalPageCount', $totalPageCount);
+        return view('users.index')->with(compact('users'))->with('pageNumber', $pageNumber)->with('pageSize', $pageSize)->with('totalPageCount', $totalPageCount);
     }
 
-    public function delete(Request $request)
+    // delete user by Id
+    public function destroy(Request $request, $id)
     {
-        if($request->has('userId')) {
-            $userId = $request->input('userId');
-        }
+        $userId = $id;
 
         try {
             $client = new \GuzzleHttp\Client();
@@ -72,6 +65,71 @@ class UsersController extends Controller
             echo "Failure to get data";
         }
 
-        return redirect()->route('dashboard')->with('status', 'User deleted!');
+        return redirect()->route('users.index')->with('status', 'User deleted! ' . $userId);
+    }
+
+    public function show(Request $request, $id)
+    {
+        try {
+            $client = new \GuzzleHttp\Client();
+            $response = $client->get('https://investor-api.herokuapp.com/api/1.0/admin/users/' . $id,
+                [
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                        'Authorization' => 'Bearer ' . session('accessToken'),
+                        'Accept' => 'application/json'
+                    ]
+                ]
+            );
+        } catch(\Exception $e) {
+            //throw new \Exception("Failure to get data from API.");
+            echo "Failure to get data";
+        }
+
+        // parse response body
+        $decoded_body = json_decode($response->getBody());
+        $user = $decoded_body;
+
+        return view('users.show')->with(compact('user'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'email' => 'required|min:6|max:255',
+            'name' => 'required|min:6|max:255',
+            'level' => 'required|in:Investor,Administrator'
+        ]); // back to form if validation fails
+
+        $displayName = $request->input('name');
+        $email = $request->input('email');
+        $level = $request->input('level');
+
+        // payload for api call
+        $payload = \GuzzleHttp\json_encode([
+            'displayName' => $displayName,
+            'email' => $email,
+            'level' => $level
+        ]);
+
+        $userId = $id;
+
+        try {
+            $client = new \GuzzleHttp\Client();
+            $response = $client->put('https://investor-api.herokuapp.com/api/1.0/admin/users/' . $userId,
+                [
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                        'Authorization' => 'Bearer ' . session('accessToken'),
+                        'Accept' => 'application/json'
+                    ],
+                    'body' => $payload
+                ]
+            );
+        } catch(\Exception $e) {
+            echo "Failure to get data";
+        }
+
+        return redirect()->back()->with('status', 'User updated!');
     }
 }

@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class LoginController extends Controller
+class AuthenticationController extends Controller
 {
     //
     public function login() {
-        return view('login.index');
+        return view('authentication.login');
     }
 
     public function logout(Request $request) {
@@ -17,7 +17,7 @@ class LoginController extends Controller
 
         $request->session()->flush();
 
-        return redirect()->route('login')->with('status', 'You are now logged out');
+        return redirect()->route('authentication.login')->with('status', 'You are now logged out');
     }
 
     public function authenticate(Request $request) {

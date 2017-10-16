@@ -21,7 +21,7 @@ class CheckIsAuthenticated
             && session('expirationTimestamp') > time();
 
         if(!$is_authenticated) {
-            return redirect('login');
+            return redirect()->route('authentication.login');
         }
 
         $request->session()->flash('isAuthenticated', 'true');

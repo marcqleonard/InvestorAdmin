@@ -11,14 +11,16 @@
 |
 */
 
-Route::redirect('/', '/dashboard', 301);
+Route::redirect('/', '/users', 301);
 
-Route::get('login', 'LoginController@login')->name('login');;
-Route::post('authenticate', 'LoginController@authenticate');
+Route::get('/login', 'AuthenticationController@login')->name('authentication.login');
+Route::post('/auth', 'AuthenticationController@authenticate')->name('authentication.authenticate');
 
-Route::group(['middleware' => 'restAuthentication'], function () {
-    Route::get('dashboard', 'DashboardController@index')->name('dashboard');
-    Route::get('deleteUser', 'DashboardController@delete')->name('deleteUser');
-    Route::get('logout', 'LoginController@logout')->name('logout');;
-
+Route::group(['middleware' => 'restAuthentication'], function ()
+{
+    Route::get('/users', 'UsersController@index')->name('users.index');
+    Route::delete('/users/{id}', 'UsersController@destroy')->name('users.delete');
+    Route::get('/users/{id}', 'UsersController@show')->name('users.show');
+    Route::post('/users/{id}', 'UsersController@update')->name('users.update');
+    Route::get('/logout', 'AuthenticationController@logout')->name('authentication.logout');
 });
