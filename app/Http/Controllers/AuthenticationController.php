@@ -22,8 +22,8 @@ class AuthenticationController extends Controller
 
     public function authenticate(Request $request) {
         $request->validate([
-            'email' => 'required|min:6|max:255',
-            'password' => 'required|min:6|max:255'
+            'email' => 'required',
+            'password' => 'required'
         ]); // back to form if validation fails
 
         // payload for api call
