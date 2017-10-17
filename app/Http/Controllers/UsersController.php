@@ -97,7 +97,7 @@ class UsersController extends Controller
     {
         $request->validate([
             'email' => 'required|email|max:100',
-            'name' => 'required|alpha_num|min:5|max:30',
+            'name' => 'required|regex:/^[\pL\s\-]+$/u|min:5|max:30',
             'level' => 'required|in:Investor,Administrator'
         ]); // back to form if validation fails
 
