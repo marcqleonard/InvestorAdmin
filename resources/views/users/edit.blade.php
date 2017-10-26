@@ -5,10 +5,10 @@
     <link rel="stylesheet" type="text/css" href="{{ url('/css/sidebar.css') }}" />
 @endsection
 
-@section('title', 'Edit User')
+@section('title', 'Edit')
 
 @section('sidebar')
-    @include('users.sidebar')
+    @include('users.singleUserSidebar')
 @endsection
 
 @section('breadcrump')
@@ -62,45 +62,5 @@
             </form>
         </div>
     </div>
-
-
-    <div class="row pt-md-4">
-        <div class="col-md-6 mx-auto">
-            <form method="POST" action="{{ route('users.delete', ['id' => $user->id]) }}">
-                {{ csrf_field() }}
-                {{ method_field('DELETE') }}
-                <div class=form-group">
-                    <input class="btn btn-danger btn-lg btn-block" type="submit" value="Delete user" id="delete-btn">
-                </div>
-            </form>
-        </div>
-    </div>
-
-{{--    @foreach($accounts as $account)
-        <h3>{{ $account->name }}</h3>
-        <p>{{ $account->balance }}</p>
-        <div class="row pt-md-4">
-            <div class="col-md-6 mx-auto">
-                <table class="table">
-                    <thead>
-
-                    </thead>
-                    @foreach($account->positions as $position)
-                    <tbody>
-                        <tr>
-                            <td>{{ $position->symbol }}</td>
-                            <td>{{ $position->name }}</td>
-                            <td>{{ $position->quantity }}</td>
-                            <td>{{ $position->averagePrice }}</td>
-                            <td>{{ $position->lastPrice }}</td>
-                            <td>{{ $position->change }}</td>
-                            <td>{{ $position->changePercent }}</td>
-                        </tr>
-                    </tbody>
-                    @endforeach
-                </table>
-            </div>
-        </div>
-    @endforeach--}}
 
 @endsection

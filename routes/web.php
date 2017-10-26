@@ -22,8 +22,10 @@ Route::post('/auth', 'AuthenticationController@authenticate')->name('authenticat
 Route::group(['middleware' => 'restAuthentication'], function ()
 {
     Route::get('/users', 'UsersController@index')->name('users.index');
+    Route::get('/users/{id}/edit', 'UsersController@edit')->name('users.edit');
+    Route::get('/users/{id}/overview', 'UsersController@show')->name('users.show');
+    Route::get('/users/{id}/dangerzone', 'UsersController@dangerzone')->name('users.dangerzone');
     Route::delete('/users/{id}', 'UsersController@destroy')->name('users.delete');
-    Route::get('/users/{id}', 'UsersController@show')->name('users.show');
     Route::post('/users/{id}', 'UsersController@update')->name('users.update');
     Route::get('/logout', 'AuthenticationController@logout')->name('authentication.logout');
 });

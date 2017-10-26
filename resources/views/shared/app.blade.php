@@ -20,14 +20,24 @@
 <body>
 
 @if(session('isAuthenticated') == 'true')
-    @include('shared.navbar')
+    <header>
+        @include('shared.navbar')
+    </header>
 @endif
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-12">
-            <div class="row pt-md-4 border-bottom-0">
+        <div class="col-md-2">
+            @yield('sidebar')
+        </div>
+        <div class="col-md-10" id="main">
+            <div class="row pt-md-2">
                 <div class="col-md-12">
+                    @yield('breadcrump')
+                </div>
+            </div>
+            <div class="row pt-md-4 border-bottom-0">
+                <div class="col-md-12" id="page">
                     <h1>@yield('title')</h1>
                 </div>
             </div>

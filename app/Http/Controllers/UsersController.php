@@ -2,10 +2,57 @@
 
 namespace App\Http\Controllers;
 
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
+use \GuzzleHttp\Promise;
 
 class UsersController extends Controller
 {
+    private function getUserAsync($id)
+    {
+        $client = new \GuzzleHttp\Client();
+
+        $promise = $client->getAsync('https://investor-api.herokuapp.com/api/1.0/admin/users/' . $id,
+            [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'Bearer ' . session('accessToken'),
+                    'Accept' => 'application/json'
+                ]
+            ]
+        );
+
+        return $promise->then(function ($response) {
+            // parse response body
+            $decoded_body = json_decode($response->getBody());
+            $user = $decoded_body;
+            return $user;
+        });
+    }
+
+    private function getAccountAsync($id, $accountId)
+    {
+        $client = new \GuzzleHttp\Client();
+
+        $promise = $client->getAsync('https://investor-api.herokuapp.com/api/1.0/admin/users/' . $id . '/accounts/' . $accountId,
+            [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'Bearer ' . session('accessToken'),
+                    'Accept' => 'application/json'
+                ]
+            ]
+        );
+
+        return $promise->then(function ($response) {
+            // parse response body
+            $decoded_body = json_decode($response->getBody());
+            $account = $decoded_body;
+            return $account;
+        });
+    }
+
+
     // show all users
     public function index(Request $request)
     {
@@ -14,7 +61,7 @@ class UsersController extends Controller
             $pageNumber = $request->input('page');
         }
         else {
-            $pageSize = 5;
+            $pageSize = 10;
             $pageNumber = 1;
         }
 
@@ -68,29 +115,38 @@ class UsersController extends Controller
         return redirect()->route('users.index')->with('status', 'User deleted! ' . $userId);
     }
 
+    public function edit(Request $request, $id)
+    {
+        $user = $this->getUserAsync($id)->wait(function($results){
+            return $results;
+        });
+
+        return view('users.edit')->with(compact('user'));
+    }
+
     public function show(Request $request, $id)
     {
-        try {
-            $client = new \GuzzleHttp\Client();
-            $response = $client->get('https://investor-api.herokuapp.com/api/1.0/admin/users/' . $id,
-                [
-                    'headers' => [
-                        'Content-Type' => 'application/json',
-                        'Authorization' => 'Bearer ' . session('accessToken'),
-                        'Accept' => 'application/json'
-                    ]
-                ]
-            );
-        } catch(\Exception $e) {
-            //throw new \Exception("Failure to get data from API.");
-            echo "Failure to get data";
+        $user = $this->getUserAsync($id)->wait(function($results){
+            return $results;
+        });
+
+        $accounts = [];
+        foreach($user->accounts as $account) {
+            $accounts[] = $this->getAccountAsync($id, $account->id)->wait(function ($results) {
+                return $results;
+            });
         }
 
-        // parse response body
-        $decoded_body = json_decode($response->getBody());
-        $user = $decoded_body;
+        return view('users.show')->with(compact('user'))->with(compact('accounts'));
+    }
 
-        return view('users.show')->with(compact('user'));
+    public function dangerzone(Request $request, $id)
+    {
+        $user = $this->getUserAsync($id)->wait(function($results){
+            return $results;
+        });
+
+        return view('users.dangerzone')->with(compact('user'));
     }
 
     public function update(Request $request, $id)

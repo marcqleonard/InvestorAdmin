@@ -1,5 +1,9 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a class="navbar-brand" href="#">InvestorAdmin</a>
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+
+    <a class="navbar-brand" href="#">
+        <img src="{{ url('/images/logo512.png') }}" width="30" height="30" class="d-inline-block align-top" alt="">
+        InvestorAdmin
+    </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
