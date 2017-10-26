@@ -52,6 +52,27 @@ class UsersController extends Controller
         });
     }
 
+    private function getTransactionsAsync($id, $accountId)
+    {
+        $client = new \GuzzleHttp\Client();
+
+        $promise = $client->getAsync('https://investor-api.herokuapp.com/api/1.0/admin/users/' . $id . '/accounts/' . $accountId . '/transactions',
+            [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'Bearer ' . session('accessToken'),
+                    'Accept' => 'application/json'
+                ]
+            ]
+        );
+
+        return $promise->then(function ($response) {
+            // parse response body
+            $decoded_body = json_decode($response->getBody());
+            $transactions = $decoded_body->items;
+            return $transactions;
+        });
+    }
 
     // show all users
     public function index(Request $request)
@@ -132,9 +153,15 @@ class UsersController extends Controller
 
         $accounts = [];
         foreach($user->accounts as $account) {
-            $accounts[] = $this->getAccountAsync($id, $account->id)->wait(function ($results) {
+            $current_account = $this->getAccountAsync($id, $account->id)->wait(function ($results) {
                 return $results;
             });
+
+            $current_account->transactions = $this->getTransactionsAsync($id, $account->id)->wait(function ($results) {
+                return $results;
+            });
+
+            $accounts[] = $current_account;
         }
 
         return view('users.show')->with(compact('user'))->with(compact('accounts'));
