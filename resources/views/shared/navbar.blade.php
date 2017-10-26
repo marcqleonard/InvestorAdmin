@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="{{ route('users.index') }}">
         <img src="{{ url('/images/logo512.png') }}" width="30" height="30" class="d-inline-block align-top" alt="">
         InvestorAdmin
     </a>
