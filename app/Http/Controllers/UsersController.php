@@ -74,6 +74,27 @@ class UsersController extends Controller
         });
     }
 
+    private function resetAccountAsync($id, $accountId)
+    {
+        $client = new \GuzzleHttp\Client();
+
+        $promise = $client->putAsync('https://investor-api.herokuapp.com/api/1.0/admin/users/' . $id . '/accounts/' . $accountId,
+            [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'Bearer ' . session('accessToken'),
+                    'Accept' => 'application/json'
+                ]
+            ]
+        );
+
+        return $promise->then(function ($response) {
+            // parse response body
+            $statusCode = $response->getStatusCode();
+            return $statusCode;
+        });
+    }
+
     // show all users
     public function index(Request $request)
     {
@@ -173,7 +194,14 @@ class UsersController extends Controller
             return $results;
         });
 
-        return view('users.dangerzone')->with(compact('user'));
+        $accounts = [];
+        foreach($user->accounts as $account) {
+            $accounts[] = $this->getAccountAsync($id, $account->id)->wait(function ($results) {
+                return $results;
+            });
+        }
+
+        return view('users.dangerzone')->with(compact('user'))->with(compact('accounts'));
     }
 
     public function update(Request $request, $id)
@@ -215,4 +243,15 @@ class UsersController extends Controller
 
         return redirect()->back()->with('status', 'User updated!');
     }
+
+    // delete user by Id
+    public function resetAccount(Request $request, $userId, $accountId)
+    {
+        $status = $this->resetAccountAsync($userId, $accountId)->wait(function($results){
+            return $results;
+        });
+
+        return redirect()->back()->with('status', 'Account reset!');;
+    }
+
 }

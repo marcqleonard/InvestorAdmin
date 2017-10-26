@@ -1,8 +1,8 @@
 @extends('shared.app')
 
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ url('/css/dashboard.css') }}" />
-    <link rel="stylesheet" type="text/css" href="{{ url('/css/sidebar.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url('/css/dashboard.css?v=1.1') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url('/css/sidebar.css?v=1.1') }}" />
 @endsection
 
 @section('title', 'Edit')

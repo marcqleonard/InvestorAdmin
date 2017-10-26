@@ -25,6 +25,7 @@ Route::group(['middleware' => 'restAuthentication'], function ()
     Route::get('/users/{id}/edit', 'UsersController@edit')->name('users.edit');
     Route::get('/users/{id}/overview', 'UsersController@show')->name('users.show');
     Route::get('/users/{id}/dangerzone', 'UsersController@dangerzone')->name('users.dangerzone');
+    Route::put('/users/{userId}/accounts/{accountId}', 'UsersController@resetAccount')->name('users.resetAccount');
     Route::delete('/users/{id}', 'UsersController@destroy')->name('users.delete');
     Route::post('/users/{id}', 'UsersController@update')->name('users.update');
     Route::get('/logout', 'AuthenticationController@logout')->name('authentication.logout');

@@ -1,8 +1,8 @@
 @extends('shared.app')
 
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ url('/css/dashboard.css') }}" />
-    <link rel="stylesheet" type="text/css" href="{{ url('/css/sidebar.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url('/css/dashboard.css?v=1.1') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url('/css/sidebar.css?v=1.1') }}" />
 @endsection
 
 @section('title', 'Danger Zone')
@@ -16,6 +16,26 @@
 @endsection
 
 @section('content')
+
+    <div class="row">
+        <div class="col-md-12">
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            @if(session('status'))
+                <div class="alert alert-success">
+                    {{ session('status') }}
+                </div>
+            @endif
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-md-12">
@@ -33,6 +53,39 @@
             </dl>
 
             <hr>
+
+            <div class="row pt-md-4 pb-md-4">
+                <div class="col-md-12">
+                    <h4>Account operations</h4>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Name</th>
+                                <th>Balance</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($accounts as $account)
+                                <tr>
+                                    <td>{{ $account->id }}</td>
+                                    <td>{{ $account->name }}</td>
+                                    <td>{{ $account->balance }}</td>
+                                    <td>
+                                        <form method="POST" action="{{ route('users.resetAccount', ['userId' => $user->id, 'accountId' => $account->id]) }}">
+                                            {{ csrf_field() }}
+                                            {{ method_field('PUT') }}
+                                            <input class="btn btn-warning" type="submit" value="Reset">
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
             <div class="row pt-md-4 pb-md-4">
                 <div class="col-md-6 mx-auto">
                     <form method="POST" action="{{ route('users.delete', ['id' => $user->id]) }}">
