@@ -38,7 +38,7 @@
             </dl>
 
             <hr>
-        @foreach($accounts as $account)
+        {{--@foreach($accounts as $account)
             <h4>{{ $account->name }} (<small>{{ $account->id }}</small>)</h4>
             <p>Balance: ${{ $account->balance }}</p>
             <div class="row">
@@ -95,6 +95,7 @@
                     </table>
                 </div>
             </div>
-        @endforeach
+        @endforeach--}}
         </div>
+    </div>
 @endsection

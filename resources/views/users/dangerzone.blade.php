@@ -54,37 +54,39 @@
 
             <hr>
 
-            <div class="row pt-md-4 pb-md-4">
-                <div class="col-md-12">
-                    <h4>Account operations</h4>
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Name</th>
-                                <th>Balance</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($accounts as $account)
+            @if(!empty($account))
+                <div class="row pt-md-4 pb-md-4">
+                    <div class="col-md-12">
+                        <h4>Account operations</h4>
+                        <table class="table table-hover">
+                            <thead>
                                 <tr>
-                                    <td>{{ $account->id }}</td>
-                                    <td>{{ $account->name }}</td>
-                                    <td>{{ $account->balance }}</td>
-                                    <td>
-                                        <form method="POST" action="{{ route('users.resetAccount', ['userId' => $user->id, 'accountId' => $account->id]) }}">
-                                            {{ csrf_field() }}
-                                            {{ method_field('PUT') }}
-                                            <input class="btn btn-warning" type="submit" value="Reset">
-                                        </form>
-                                    </td>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>Balance</th>
+                                    <th>Action</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                    <tr>
+                                        <td>{{ $account->id }}</td>
+                                        <td>{{ $account->name }}</td>
+                                        <td>{{ $account->balance }}</td>
+                                        <td>
+                                            <form method="POST" action="{{ route('users.resetAccount', ['userId' => $user->id, 'accountId' => $account->id]) }}">
+                                                {{ csrf_field() }}
+                                                {{ method_field('PUT') }}
+                                                <input class="btn btn-warning" type="submit" value="Reset">
+                                            </form>
+                                        </td>
+                                    </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
+            @else
+                <p>No account</p>
+            @endif
 
             <div class="row pt-md-4 pb-md-4">
                 <div class="col-md-6 mx-auto">
