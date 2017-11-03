@@ -152,4 +152,88 @@ class InvestorFacade
             return False;
         }
     }
+
+    public function getBuyBrokerageFee()
+    {
+        $url = $this->API_URL . "commissions/buy";
+
+        try {
+            $response = $this->client->get($url,
+                [
+                    'headers' => $this->headers
+                ]
+            );
+
+            return json_decode($response->getBody());
+        }
+        catch(\Exception $e) {
+            return null;
+        }
+    }
+
+    public function getSellBrokerageFee()
+    {
+        $url = $this->API_URL . "commissions/sell";
+
+        try {
+            $response = $this->client->get($url,
+                [
+                    'headers' => $this->headers
+                ]
+            );
+
+            return json_decode($response->getBody());
+        }
+        catch(\Exception $e) {
+            return null;
+        }
+    }
+
+    public function updateBuyFee($buyFixedBrackets, $buyPercentageBrackets)
+    {
+        $url = $this->API_URL . "commissions/buy";
+
+        $payload = json_encode([
+            "fixed" => $buyFixedBrackets,
+            "percentage" => $buyPercentageBrackets
+        ]);
+
+        try {
+            $response = $this->client->put($url,
+                [
+                    'headers' => $this->headers,
+                    'body' => $payload
+                ]
+            );
+
+            return True;
+        }
+        catch(\Exception $e) {
+            return new Response($e);
+        }
+    }
+
+    public function updateSellFee($sellFixedBrackets, $sellPercentageBrackets)
+    {
+        $url = $this->API_URL . "commissions/sell";
+
+        $payload = json_encode([
+            "fixed" => $sellFixedBrackets,
+            "percentage" => $sellPercentageBrackets
+        ]);
+
+        try {
+            $response = $this->client->put($url,
+                [
+                    'headers' => $this->headers,
+                    'body' => $payload
+                ]
+            );
+
+            return True;
+        }
+        catch(\Exception $e) {
+            return new Response($e);
+        }
+    }
 }

@@ -30,5 +30,7 @@ Route::group(['middleware' => 'restAuthentication'], function ()
     Route::put('/users/{userId}/accounts/{accountId}', 'UsersController@resetAccount')->name('users.resetAccount');
     Route::delete('/users/{id}', 'UsersController@destroy')->name('users.delete');
     Route::post('/users/{id}', 'UsersController@update')->name('users.update');
+    Route::post('/brokerage/update', 'BrokerageFeeController@update')->name('brokerage.update');
+    Route::get('/brokerage/edit', 'BrokerageFeeController@edit')->name('brokerage.edit');
     Route::get('/logout', 'AuthenticationController@logout')->name('authentication.logout');
 });
