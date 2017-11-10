@@ -6,7 +6,7 @@ use Illuminate\Http\Response;
 
 class InvestorFacade
 {
-    private $API_URL = "https://investor-api.herokuapp.com/api/1.0/admin/";
+    private $API_URL = "https://investor-api.herokuapp.com/api/1.0/";
 
     private $client;
     private $headers;
@@ -20,9 +20,57 @@ class InvestorFacade
         ];
     }
 
+    // check token response is valid
+    private function validateToken($json) {
+        if(!isset($json->accessToken) || !isset($json->aud) || !isset($json->expires))
+            return False;
+
+        $accessToken = $json->accessToken;
+        $explodedToken = explode('.', $accessToken);
+        $decoded = json_decode(base64_decode($explodedToken[1]));
+        $userPermission = $decoded->aud;
+
+        if($userPermission != "Administrator")
+        {
+            return False;
+        }
+
+        return True;
+    }
+
+    // get token and return null if fail
+    public function getToken($email, $password) {
+        $url = $this->API_URL . "token";
+
+        $payload = json_encode([
+            'email' => $email,
+            'password' => $password
+        ]);
+
+        try {
+            $response = $this->client->post($url,
+                [
+                    'headers' => ['Content-Type' => 'application/json', 'Accept' => 'application/json'],
+                    'body'    => $payload
+                ]
+            );
+
+            $response_body = json_decode($response->getBody());
+            if($this->validateToken($response_body)) {
+                return null;
+            }
+
+            return json_decode($response->getBody());
+        }
+        catch(\Exception $e) {
+            return null;
+        }
+    }
+
+    // get all users with paging
     public function getUsers($pageSize, $pageNumber)
     {
-        $url = $this->API_URL . "users";
+        $url = $this->API_URL . "admin/users";
         try
         {
             $response = $this->client->get($url,
@@ -39,10 +87,11 @@ class InvestorFacade
         }
     }
 
+    // get user by id
     public function getUser($userId)
     {
         try {
-            $url = $this->API_URL . "users/" . $userId;
+            $url = $this->API_URL . "admin/users/" . $userId;
             $response = $this->client->get($url,
                 [
                     'headers' => $this->headers
@@ -59,7 +108,7 @@ class InvestorFacade
     // delete user by Id
     public function deleteUser($userId)
     {
-        $url = $this->API_URL . "users/" . $userId;
+        $url = $this->API_URL . "admin/users/" . $userId;
 
         try {
             $response = $this->client->delete($url,
@@ -75,9 +124,10 @@ class InvestorFacade
         }
     }
 
+    // get account by user id and account id
     public function getAccount($userId, $accountId)
     {
-        $url = $this->API_URL . "users/" . $userId . "/accounts/" . $accountId;
+        $url = $this->API_URL . "admin/users/" . $userId . "/accounts/" . $accountId;
 
         try {
             $response = $this->client->get($url,
@@ -93,9 +143,10 @@ class InvestorFacade
         }
     }
 
+    // get transactions by user id and account id
     public function getTransactions($userId, $accountId)
     {
-        $url = $this->API_URL . "users/" . $userId . "/accounts/" . $accountId . "/transactions";
+        $url = $this->API_URL . "admin/users/" . $userId . "/accounts/" . $accountId . "/transactions";
 
         try {
             $response = $this->client->get($url,
@@ -111,9 +162,10 @@ class InvestorFacade
         }
     }
 
+    // reset account by user id and account id
     public function resetAccount($id, $accountId)
     {
-        $url = $this->API_URL . "users/" . $id . "/accounts/" . $accountId;
+        $url = $this->API_URL . "admin/users/" . $id . "/accounts/" . $accountId;
 
         try {
             $response = $this->client->put($url,
@@ -128,9 +180,10 @@ class InvestorFacade
         }
     }
 
+    // update user details (name, email, level)
     public function updateUser($userId, $displayName, $email, $level)
     {
-        $url = $this->API_URL . "users/" . $userId;
+        $url = $this->API_URL . "admin/users/" . $userId;
 
         $payload = json_encode([
             'displayName' => $displayName,
@@ -153,9 +206,10 @@ class InvestorFacade
         }
     }
 
+    // get buy brokerage fee
     public function getBuyBrokerageFee()
     {
-        $url = $this->API_URL . "commissions/buy";
+        $url = $this->API_URL . "admin/commissions/buy";
 
         try {
             $response = $this->client->get($url,
@@ -171,9 +225,10 @@ class InvestorFacade
         }
     }
 
+    // get sell brokerage fee
     public function getSellBrokerageFee()
     {
-        $url = $this->API_URL . "commissions/sell";
+        $url = $this->API_URL . "admin/commissions/sell";
 
         try {
             $response = $this->client->get($url,
@@ -189,9 +244,10 @@ class InvestorFacade
         }
     }
 
+    // update buy brokerage fee
     public function updateBuyFee($buyFixedBrackets, $buyPercentageBrackets)
     {
-        $url = $this->API_URL . "commissions/buy";
+        $url = $this->API_URL . "admin/commissions/buy";
 
         $payload = json_encode([
             "fixed" => $buyFixedBrackets,
@@ -213,9 +269,10 @@ class InvestorFacade
         }
     }
 
+    // update sell brokerage fee
     public function updateSellFee($sellFixedBrackets, $sellPercentageBrackets)
     {
-        $url = $this->API_URL . "commissions/sell";
+        $url = $this->API_URL . "admin/commissions/sell";
 
         $payload = json_encode([
             "fixed" => $sellFixedBrackets,

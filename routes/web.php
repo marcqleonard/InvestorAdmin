@@ -11,14 +11,16 @@
 |
 */
 
+// load users page by default
 Route::redirect('/', '/users');
 
-// temp fix for 301 redirect
+// fix for 301 redirect
 Route::redirect('/dashboard', '/users');
 
 Route::get('/login', 'AuthenticationController@login')->name('authentication.login');
 Route::post('/auth', 'AuthenticationController@authenticate')->name('authentication.authenticate');
 
+// routes that require user to be authenticated
 Route::group(['middleware' => 'restAuthentication'], function ()
 {
     Route::get('/users', 'UsersController@index')->name('users.index');

@@ -18,10 +18,12 @@ class UsersController extends Controller
             $pageNumber = $request->input('page');
         }
         else {
+            // set default paging options if no GET param provided
             $pageSize = 10;
             $pageNumber = 1;
         }
 
+        // retrieve users from API
         $facade = new InvestorFacade();
         $json = $facade->getUsers($pageSize, $pageNumber);
 
