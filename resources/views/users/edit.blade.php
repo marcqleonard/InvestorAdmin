@@ -16,6 +16,7 @@
 @endsection
 
 @section('content')
+    @include('users.miniNav')
     <div class="row">
         <div class="col-md-12">
             @if ($errors->any())

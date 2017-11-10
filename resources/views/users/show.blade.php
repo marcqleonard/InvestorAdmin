@@ -21,6 +21,8 @@
 
 @section('content')
 
+    @include('users.miniNav')
+
     <div class="row">
         <div class="col-md-12">
 
@@ -37,65 +39,6 @@
                 <dd>{{ $user->level }}</dd>
             </dl>
 
-            <hr>
-        {{--@foreach($accounts as $account)
-            <h4>{{ $account->name }} (<small>{{ $account->id }}</small>)</h4>
-            <p>Balance: ${{ $account->balance }}</p>
-            <div class="row">
-                <div class="col-md-12 mx-auto">
-                    <h5>Current positions</h5>
-                    <table class="table table-responsive table-hover table-sm">
-                        <thead>
-                            <tr>
-                                <th scope="col">Symbol</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Quantity</th>
-                                <th scope="col">Avg Price</th>
-                                <th scope="col">Last Price</th>
-                                <th scope="col">Change</th>
-                                <th scope="col">Change %</th>
-                            </tr>
-                        </thead>
-                        @foreach($account->positions as $position)
-                        <tbody>
-                            <tr>
-                                <td>{{ $position->symbol }}</td>
-                                <td>{{ $position->name }}</td>
-                                <td>{{ $position->quantity }}</td>
-                                <td>{{ $position->averagePrice }}</td>
-                                <td>{{ $position->lastPrice }}</td>
-                                <td><span class="position-outcome">{{ $position->change }}</span></td>
-                                <td><span class="position-outcome">{{ $position->changePercent }}</span>%</td>
-                            </tr>
-                        </tbody>
-                        @endforeach
-                    </table>
-                    <h5>Transactions</h5>
-                    <table class="table table-responsive table-hover table-sm">
-                        <thead>
-                        <tr>
-                            <th scope="col">UTC</th>
-                            <th scope="col">Type</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Amount</th>
-                            <th scope="col">Balance</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($account->transactions as $transaction)
-                                <tr>
-                                    <td>{{ $transaction->timestampUtc }}</td>
-                                    <td>{{ $transaction->type }}</td>
-                                    <td>{{ $transaction->description }}</td>
-                                    <td>{{ $transaction->amount }}</td>
-                                    <td>${{ $transaction->balance }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        @endforeach--}}
         </div>
     </div>
 @endsection

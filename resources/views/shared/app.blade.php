@@ -28,10 +28,10 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-2 d-none d-md-block d-xs-none">
             @yield('sidebar')
         </div>
-        <div class="col-md-10" id="main">
+        <div class="col-md-10 col-sm-12 col-xs-12 pb-4" id="main">
             <div class="row pt-md-2">
                 <div class="col-md-12">
                     @yield('breadcrump')

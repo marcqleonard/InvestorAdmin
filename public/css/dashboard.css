@@ -1,3 +1,16 @@
 td > img {
     width: 2em;
 }
+
+.user-zone-nav a {
+    color: white;
+}
+
+.user-zone-nav {
+    background-color: #353a40;
+    /* color: white; */
+}
+
+.user-zone-nav a:hover {
+    color: grey;
+}

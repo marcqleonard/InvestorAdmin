@@ -11,10 +11,13 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
+            <li class="nav-item d-md-none d-xs-block">
+                <a class="nav-link {{ Request::is('*users') ? 'active' : '' }}" href="{{ route('users.index') }}">All Users</a>
+            </li>
+            <li class="nav-item d-md-none d-xs-block">
+                <a class="nav-link {{ Request::is('*brokerage*') ? 'active' : '' }}" href="{{ route('brokerage.edit') }}">Brokerage Fee</a>
             </li>
         </ul>
-
 
         <ul class="navbar-nav">
             <li class="nav-item">

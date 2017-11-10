@@ -1,4 +1,4 @@
-<nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
+<nav class="col-md-2 d-none d-sm-block bg-light sidebar">
     <p class="pl-md-2"><strong>{{ $user->email }}</strong></p>
     <ul class="nav nav-pills flex-column">
         <li class="nav-item">
