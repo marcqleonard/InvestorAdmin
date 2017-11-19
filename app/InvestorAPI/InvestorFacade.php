@@ -22,20 +22,22 @@ class InvestorFacade
 
     // check token response is valid
     private function validateToken($json) {
-        if(!isset($json->accessToken) || !isset($json->aud) || !isset($json->expires))
-            return False;
+        try {
+            $accessToken = $json->accessToken;
+            $explodedToken = explode('.', $accessToken);
+            $decoded = json_decode(base64_decode($explodedToken[1]));
+            $userPermission = $decoded->aud;
 
-        $accessToken = $json->accessToken;
-        $explodedToken = explode('.', $accessToken);
-        $decoded = json_decode(base64_decode($explodedToken[1]));
-        $userPermission = $decoded->aud;
+            if($userPermission != "Administrator")
+            {
+                return False;
+            }
 
-        if($userPermission != "Administrator")
-        {
+            return True;
+        }
+        catch(\Exception $e) {
             return False;
         }
-
-        return True;
     }
 
     // get token and return null if fail
@@ -56,7 +58,7 @@ class InvestorFacade
             );
 
             $response_body = json_decode($response->getBody());
-            if($this->validateToken($response_body)) {
+            if(!$this->validateToken($response_body)) {
                 return null;
             }
 
@@ -173,10 +175,10 @@ class InvestorFacade
                     'headers' => $this->headers
                 ]
             );
-            return json_decode($response->getBody());
+            return True;
         }
         catch(\Exception $e) {
-            return null;
+            return False;
         }
     }
 
